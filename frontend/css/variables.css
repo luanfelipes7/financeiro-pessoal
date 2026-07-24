@@ -1,0 +1,18 @@
+:root{
+    --color-primary: #2563eb;
+    --color-primary-dark: #1d4ed8;
+    --color-danger: #dc2626;
+    --color-success: #16a34a;
+    --color-text: #1f2937;
+    --color-text-light: #6b7280;
+    --color-background: #f3f4f6;
+    --color-white: #ffffff;
+    --color-border: #d1d5db;
+
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+
+    --radius: 8px;
+    --font-size-base: 16px;
+}
