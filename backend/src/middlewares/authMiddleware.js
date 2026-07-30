@@ -7,7 +7,7 @@ function authMiddleware(req,res,next){
         return res.status(401).json({error: 'Token não fornecido.'});
     }
 
-    cosnt [scheme, token] = authHeader.split('  ');
+    const [scheme, token] = authHeader.split('  ');
 
     if (scheme != 'Bearer' || !token) {
         return res.status(401).json({error: 'Formato de token inválido. Use Bearer <token>.'});
@@ -15,7 +15,7 @@ function authMiddleware(req,res,next){
 
     try{
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.userId = decode.id;
+        req.userId = decoded.id;
         next();
     }catch(error){
         return res.status(401).json({error: 'Token inválido ou expirado'});

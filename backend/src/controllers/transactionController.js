@@ -27,7 +27,7 @@ function validateTransactionData({type, amount, category, description, date}){
 
 function create(rep, res){
     try{
-        const {type, amount, category, description, date} = req.body;
+        const {type, amount, category, description, date} = rep.body;
 
         const errorMessage = validateTransactionData({type, amount, category, date});
         if (errorMessage){
@@ -35,7 +35,7 @@ function create(rep, res){
         }
 
         const transactionId = createTransaction({
-            userId: req.userId,
+            userId: rep.userId,
             type,
             amount: Number(amount),
             category,

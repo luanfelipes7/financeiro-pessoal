@@ -9,7 +9,7 @@ function createTransaction({userId, type, amount,category, description,date}){
     return result.lastInsertRowid;
 }
 
-function findTransactionByUser(userId,filters = {}){
+function findTransactionsByUser(userId,filters = {}){
     let query = `SELECT * FROM transactions WHERE user_id = ?`;
     const params = [userId];
 
@@ -42,7 +42,7 @@ function findTransactionById(id, userId) {
 function updateTransaction(id, userId,{type, amount, category, description, date}){
     const stmt = db.prepare(`
         UPDATE transactions
-        SET type = ?, amount = ?, categoty = ?, descpription = ?, date = ?
+        SET type = ?, amount = ?, categoty = ?, description = ?, date = ?
         WHERE id = ? AND user_id = ?
         `);
     const result = stmt.run(type, amount, category, description, date, id, userId);
