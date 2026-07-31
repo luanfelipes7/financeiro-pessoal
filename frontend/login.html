@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Controle Financeiro</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div class="auth-card">
+        <h1>Bem-vindo de volta</h1>
+        <p class="subtitle">Entre para gerenciar suas finanças.</p>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="btn-primary" id="submitBtn">Entrar</button>
+        </form>
+
+        <p class="auth-footer">Não tem conta? <a href="register.html">Cadastre-se</a></p>
+    </div>
+
+    <script type="module" src="js/loginPage.js"></script>
+</body>
+</html>
