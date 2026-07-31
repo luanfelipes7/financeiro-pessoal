@@ -29,4 +29,16 @@ db.exec(`
     )
 `);
 
+db.exec(`
+    CREATE TABLE IF NOT EXISTS categories(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    type TEXT NOT NULL CHECK (type IN('income', 'expense')),
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FORENIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE(user_id, name, type)
+    )
+`);
+
 module.exports = db;

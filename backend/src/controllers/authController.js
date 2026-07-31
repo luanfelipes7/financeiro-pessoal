@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { createUser, findUserByEmail} = require('../models/userModel');
+const { createCategory } = require('../models/categoryModel');
 
 const SALT_ROUNDS = 10;
 
@@ -24,6 +25,19 @@ async function register(req, res){
         const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
 
         const userId = createUser({name, email, passwordHash});
+
+        const defaultCategories = [
+            {name: 'Salário', type: 'income'},
+            {name: 'Freelance', type: 'income'},
+            {name: 'Alimentação', type: 'expense'},
+            {name: 'Transporte', type: 'expense'},
+            {name: 'Moradia', type: 'expense'},
+            {name: 'Lazer', type:'expense'}
+        ];
+
+        for (const category of defaultCategories) {
+            createCategory({userId, name: category.name, type: category.type});
+        }
 
         return res.status(201).json({
             message: 'Usuário criado com sucesso.',
