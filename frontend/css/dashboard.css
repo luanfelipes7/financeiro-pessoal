@@ -1,0 +1,99 @@
+.topbar{
+    background-color: var(--color-white);
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.topbar h1{ font-size: 20px; color: var(--color-text); }
+
+.topbar-user{
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    color: var(--color-text-light);
+    font-size: 14px;
+}
+
+.btn-secondary{
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    font-size: 14px;
+}
+
+.dashboard{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+
+.summary-cards{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.card{
+    background-color: var(--color-white);
+    border-radius: var(--radius);
+    padding: var(--spacing-md);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.card-label{ display: block; font-size: 13px; color: var(--color-text-light); margin-bottom: 4px; }
+.card-value{ display: block; font-size: 22px; font-weight: 700; }
+.card-income .card-value{ color: var(--color-success); }
+.card-expense .card-value{ color: var(--color-danger); }
+.card-balance .card-value{ color: var(--color-primary); }
+
+.chart-section, .transaction-section{
+    background-color: var(--color-white);
+    border-radius: var(--radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.chart-section h2, .transaction-section h2{
+    font-size: 16px;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text);
+}
+
+.transaction-form{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.transaction-form select, .transaction-form input{
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font-size: 14px;
+}
+
+.transaction-list{ list-style: none; }
+
+.transaction-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.transaction-item .amount-expense{ color: var(--color-danger); }
+.transaction-item .amount-income{ color: var(--color-success); }
+
+.transaction-item button{
+    background: none;
+    color: var(--color-text-light);
+    font-size: 13px;
+}
