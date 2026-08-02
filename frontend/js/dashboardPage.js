@@ -1,7 +1,7 @@
 import {listCategoreis, createCategory, listTransactions, deleteCategory, getSummary } from './api.js';
-import { getUser, clearSession, isAuthenticaded } from './/storege.js';
+import { getUser, clearSession, isAuthenticated } from './storage.js';
 
-if (!isAuthenticaded()) {
+if (!isAuthenticated()) {
     window.location.href = 'login.html';
 }
 
