@@ -1,4 +1,4 @@
-import { listCategories, createCategory, createTransaction, listTransactions, deleteTransaction, getSummary } from './api.js';
+import { listCategories, createCategory, deleteCategory, createTransaction, updateTransaction, listTransactions, deleteTransaction, getSummary } from './api.js';
 import { getUser, clearSession, isAuthenticated } from './storage.js';
 
 if (!isAuthenticated()) {
@@ -8,7 +8,7 @@ if (!isAuthenticated()) {
 const user = getUser();
 document.getElementById('userName').textContent = user ? user.name : '';
 
-document.getElementById('logoutBtn').addEventListener('click', ()=>{
+document.getElementById('logoutBtn').addEventListener('click', () => {
     clearSession();
     window.location.href = 'login.html';
 });
@@ -16,6 +16,7 @@ document.getElementById('logoutBtn').addEventListener('click', ()=>{
 document.getElementById('date').valueAsDate = new Date();
 
 let chart = null;
+let editingTransactionId = null;
 
 async function loadCategories() {
     const { categories } = await listCategories();
@@ -73,7 +74,7 @@ document.getElementById('clearFiltersBtn').addEventListener('click', () => {
 });
 
 function formatCurrency(value) {
-    return value.toLocaleString('pt-BR',{ style: 'currency', currency: 'BRL' });
+    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
 async function loadSummary() {
@@ -84,7 +85,7 @@ async function loadSummary() {
     document.getElementById('balance').textContent = formatCurrency(balance);
 }
 
-function renderChart(transactions){
+function renderChart(transactions) {
     const expensesByCategory = {};
     transactions
         .filter((t) => t.type === 'expense')
@@ -94,7 +95,7 @@ function renderChart(transactions){
 
     const ctx = document.getElementById('expenseChart');
 
-    if (chart){
+    if (chart) {
         chart.destroy();
     }
 
@@ -114,7 +115,7 @@ function renderChart(transactions){
     });
 }
 
-function renderTransactions(transactions){
+function renderTransactions(transactions) {
     const list = document.getElementById('transactionList');
     list.innerHTML = '';
 
@@ -122,9 +123,10 @@ function renderTransactions(transactions){
         const item = document.createElement('li');
         item.className = 'transaction-item';
         item.innerHTML = `
-        <span>${t.date} - ${t.category}${t.description ? ' - ' + t.description : ''} </span>
-        <span>
+            <span>${t.date} - ${t.category}${t.description ? ' - ' + t.description : ''} </span>
+            <span>
                 <span class="amount-${t.type}">${t.type === 'expense' ? '-' : '+'} ${formatCurrency(t.amount)}</span>
+                <button class="edit-btn" data-id="${t.id}" data-type="${t.type}" data-category="${t.category}" data-amount="${t.amount}" data-description="${t.description || ''}" data-date="${t.date}">Editar</button>
                 <button data-id="${t.id}">Excluir</button>
             </span>
         `;
@@ -136,6 +138,18 @@ function renderTransactions(transactions){
             await deleteTransaction(btn.dataset.id);
             await refreshAll();
         });
+    list.querySelectorAll('.edit-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            editingTransactionId = btn.dataset.id;
+            document.getElementById('type').value = btn.dataset.type;
+            loadCategories();
+            document.getElementById('category').value = btn.dataset.category;
+            document.getElementById('amount').value = btn.dataset.amount;
+            document.getElementById('description').value = btn.dataset.description;
+            document.getElementById('date').value = btn.dataset.date;
+            document.getElementById('transactionSubmitBtn').textContent = 'Salvar edição';
+        });
+    });
     });
 }
 
@@ -145,14 +159,14 @@ async function loadTransactions() {
     renderChart(transactions);
 }
 
-async function refreshAll(){
+async function refreshAll() {
     await Promise.all([loadSummary(), loadTransactions()]);
 }
 
 document.getElementById('transactionForm').addEventListener('submit', async (event) => {
     event.preventDefault();
     const errorMessage = document.getElementById('errorMessage');
-    errorMessage.textContent = '';
+    errorMessage.classList.remove('visible');
 
     const transaction = {
         type: document.getElementById('type').value,
@@ -163,7 +177,13 @@ document.getElementById('transactionForm').addEventListener('submit', async (eve
     };
 
     try {
-        await createTransaction(transaction);
+        if (editingTransactionId) {
+            await updateTransaction(editingTransactionId, transaction);
+            editingTransactionId = null;
+            document.getElementById('transactionSubmitBtn').textContent = 'Adicionar';
+        } else {
+            await createTransaction(transaction);
+        }
         document.getElementById('amount').value = '';
         document.getElementById('description').value = '';
         await refreshAll();

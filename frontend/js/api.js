@@ -74,3 +74,10 @@ export function createCategory(category) {
         body: JSON.stringify(category)
     });
 }
+
+export function updateTransaction(id, transaction) {
+    return request(`/transactions/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(transaction)
+    });
+}
