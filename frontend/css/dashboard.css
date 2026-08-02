@@ -105,14 +105,6 @@ body{
     background-color: var(--color-background);
 }
 
-.chart-section{
-    background-color: var(--color-white);
-    border-radius: var(--radius);
-    padding: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-}
-
 .filters-bar{
     display: flex;
     flex-wrap: wrap;
@@ -152,4 +144,10 @@ body{
     margin-top: var(--spacing-md);
     font-size: 14px;
     color: var(--color-text-light);
+}
+
+.chart-container{
+    position: relative;
+    height: 320px;
+    margin-top: var(--spacing-md);
 }
