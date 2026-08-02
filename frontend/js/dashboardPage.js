@@ -6,7 +6,7 @@ if (!isAuthenticated()) {
 }
 
 const user = getUser();
-document.getElementById('user-name').textContent = user ? user.name : '';
+document.getElementById('userName').textContent = user ? user.name : '';
 
 document.getElementById('logoutBtn').addEventListener('click', ()=>{
     clearSession();
@@ -17,7 +17,7 @@ document.getElementById('date').valueAsDate = new Date();
 
 let chart = null;
 
-async function loadCategoties(){
+async function loadCategories(){
     const {categories} = await listCategories();
     const select = document.getElementById('category');
     const type = document.getElementById('type').value;
@@ -107,7 +107,7 @@ function renderTransactions(transactions){
 
     list.querySelectorAll('button[data-id]').forEach((btn) => {
         btn.addEventListener('click', async () => {
-            await deleteCategory(btn.dataset.id);
+            await deleteTransaction(btn.dataset.id);
             await refreshAll();
         });
     });
@@ -125,7 +125,7 @@ async function refreshAll(){
 
 document.getElementById('transactionForm').addEventListener('submit', async (event) => {
     event.preventDefault();
-    const errorMessage = document.getElementById('error-message');
+    const errorMessage = document.getElementById('errorMessage');
     errorMessage.textContent = '';
 
     const transaction = {

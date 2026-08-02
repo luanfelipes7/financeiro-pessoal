@@ -24,7 +24,7 @@ form.addEventListener('submit', async (event) =>{
         saveSession(data.token, data.user);
         window.location.href = 'dashboard.html';
     } catch (error){
-        errorMessage.textContent = errorMessage;
+        errorMessage.textContent = error.message;
         errorMessage.classList.add('visible');
     } finally {
         submitBtn.disabled = false;
