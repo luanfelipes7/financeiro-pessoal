@@ -81,3 +81,7 @@ export function updateTransaction(id, transaction) {
         body: JSON.stringify(transaction)
     });
 }
+
+export function deleteCategory(id) {
+    return request(`/categories/${id}`, { method: 'DELETE' });
+}

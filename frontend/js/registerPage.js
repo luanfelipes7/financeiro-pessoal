@@ -1,5 +1,7 @@
 import { register, login } from "./api.js";
 import {saveSession} from './storage.js';
+import { applyStoredTheme } from './theme.js';
+applyStoredTheme();
 
 const form = document.getElementById('registerForm');
 const errorMessage = document.getElementById('errorMessage');

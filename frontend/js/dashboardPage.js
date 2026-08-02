@@ -1,5 +1,6 @@
 import { listCategories, createCategory, deleteCategory, createTransaction, updateTransaction, listTransactions, deleteTransaction, getSummary } from './api.js';
 import { getUser, clearSession, isAuthenticated } from './storage.js';
+import { toggleTheme } from './theme.js';
 
 if (!isAuthenticated()) {
     window.location.href = 'login.html';
@@ -17,6 +18,9 @@ document.getElementById('date').valueAsDate = new Date();
 
 let chart = null;
 let editingTransactionId = null;
+const PAGE_SIZE = 10;
+let currentPage = 1;
+let allTransactions = [];
 
 async function loadCategories() {
     const { categories } = await listCategories();
@@ -43,6 +47,7 @@ async function loadCategories() {
         filterSelect.appendChild(option);
     });
     filterSelect.value = currentValue;
+    renderCategoryList(categories);
 }
 
 document.getElementById('type').addEventListener('change', loadCategories);
@@ -72,6 +77,8 @@ document.getElementById('clearFiltersBtn').addEventListener('click', () => {
     document.getElementById('filterType').value = '';
     refreshAll();
 });
+
+document.getElementById('themeToggleBtn').addEventListener('click', toggleTheme);
 
 function formatCurrency(value) {
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -155,7 +162,9 @@ function renderTransactions(transactions) {
 
 async function loadTransactions() {
     const { transactions } = await listTransactions(getActiveFilters());
-    renderTransactions(transactions);
+    allTransactions = transactions;
+    currentPage = 1;
+    renderCurrentPage();
     renderChart(transactions);
 }
 
@@ -233,6 +242,56 @@ document.getElementById('exportCsvBtn').addEventListener('click', async () => {
     link.click();
 
     URL.revokeObjectURL(url);
+});
+
+function renderCategoryList(categories) {
+    const list = document.getElementById('categoryList');
+    list.innerHTML = '';
+
+    categories.forEach((c) => {
+        const item = document.createElement('li');
+        item.className = 'category-item';
+        item.innerHTML = `
+            <span>${c.name} (${c.type === 'income' ? 'Receita' : 'Despesa'})</span>
+            <button data-id="${c.id}">Excluir</button>
+        `;
+        list.appendChild(item);
+    });
+
+    list.querySelectorAll('button[data-id]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+            try {
+                await deleteCategory(btn.dataset.id);
+                await loadCategories();
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+    });
+}
+
+function renderCurrentPage() {
+    const totalPages = Math.max(1, Math.ceil(allTransactions.length / PAGE_SIZE));
+    currentPage = Math.min(currentPage, totalPages);
+
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const pageItems = allTransactions.slice(start, start + PAGE_SIZE);
+
+    renderTransactions(pageItems);
+
+    document.getElementById('pageInfo').textContent = `Página ${currentPage} de ${totalPages}`;
+    document.getElementById('prevPageBtn').disabled = currentPage === 1;
+    document.getElementById('nextPageBtn').disabled = currentPage === totalPages;
+}
+
+document.getElementById('prevPageBtn').addEventListener('click', () => {
+    currentPage--;
+    renderCurrentPage();
+});
+
+document.getElementById('nextPageBtn').addEventListener('click', () => {
+    currentPage++;
+    renderCurrentPage();
 });
 
 loadCategories();

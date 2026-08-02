@@ -16,3 +16,15 @@
     --radius: 8px;
     --font-size-base: 16px;
 }
+
+[data-theme="dark"]{
+    --color-primary: #3b82f6;
+    --color-primary-dark: #2563eb;
+    --color-danger: #f87171;
+    --color-success: #4ade80;
+    --color-text: #f3f4f6;
+    --color-text-light: #9ca3af;
+    --color-background: #111827;
+    --color-white: #1f2937;
+    --color-border: #374151;
+}

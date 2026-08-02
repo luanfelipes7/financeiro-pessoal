@@ -123,3 +123,30 @@ body{
     border-radius: var(--radius);
     font-size: 14px;
 }
+
+.category-list{ list-style: none; margin-top: var(--spacing-md); }
+
+.category-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 14px;
+}
+
+.category-item button{
+    background: none;
+    color: var(--color-text-light);
+    font-size: 13px;
+}
+
+.pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    font-size: 14px;
+    color: var(--color-text-light);
+}

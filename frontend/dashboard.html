@@ -16,6 +16,7 @@
         <h1>Controle Financeiro</h1>
         <div class="topbar-user">
             <span id="userName"></span>
+            <button id="themeToggleBtn" class="btn-secondary">🌙</button>
             <button id="logoutBtn" class="btn-secondary">Sair</button>
         </div>
     </header>
@@ -51,6 +52,7 @@
                 <input type="text" id="newCategoryName" placeholder="Nome da categoria" required>
                 <button type="submit" class="btn-primary">Adicionar categoria</button>
             </form>
+            <ul class="category-list" id="categoryList"></ul>
         </section>
 
         <section class="transaction-section">
@@ -88,6 +90,11 @@
 
             <h2>Transações</h2>
             <ul class="transaction-list" id="transactionList"></ul>
+            <div class="pagination">
+                <button id="prevPageBtn" class="btn-secondary">Anterior</button>
+                <span id="pageInfo"></span>
+                <button id="nextPageBtn" class="btn-secondary">Próxima</button>
+            </div>
         </section>
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>

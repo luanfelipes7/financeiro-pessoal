@@ -1,5 +1,7 @@
 import {login} from './api.js';
 import {saveSession, isAuthenticated} from './storage.js';
+import { applyStoredTheme } from './theme.js';
+applyStoredTheme();
 
 if(isAuthenticated()){
     window.location.href = 'dashboard.html';
