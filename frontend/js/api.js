@@ -67,3 +67,10 @@ export function getSummary(month){
     const query = month ? `?month=${month}`: '';
     return request(`/transactions/summary${query}`, {method:'GET'});
 }
+
+export function createCategory(category) {
+    return request('/categories', {
+        method: 'POST',
+        body: JSON.stringify(category)
+    });
+}

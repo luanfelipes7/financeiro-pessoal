@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="css/auth.css">
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
+
 <body>
     <header class="topbar">
         <h1>Controle Financeiro</h1>
@@ -40,6 +42,18 @@
         </section>
 
         <section class="transaction-section">
+            <h2>Nova categoria</h2>
+            <form id="categoryForm" class="transaction-form">
+                <select id="newCategoryType" required>
+                    <option value="expense">Despesa</option>
+                    <option value="income">Receita</option>
+                </select>
+                <input type="text" id="newCategoryName" placeholder="Nome da categoria" required>
+                <button type="submit" class="btn-primary">Adicionar categoria</button>
+            </form>
+        </section>
+
+        <section class="transaction-section">
             <h2>Nova transação</h2>
             <form id="transactionForm" class="transaction-form">
                 <select id="type" required>
@@ -62,4 +76,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
     <script type="module" src="js/dashboardPage.js"></script>
 </body>
+
 </html>

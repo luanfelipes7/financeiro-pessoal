@@ -1,4 +1,4 @@
-import {listCategoreis, createCategory, listTransactions, deleteCategory, getSummary } from './api.js';
+import { listCategories, createCategory, createTransaction, listTransactions, deleteTransaction, getSummary } from './api.js';
 import { getUser, clearSession, isAuthenticated } from './storage.js';
 
 if (!isAuthenticated()) {
@@ -34,6 +34,21 @@ async function loadCategoties(){
 }
 
 document.getElementById('type').addEventListener('change', loadCategories);
+
+document.getElementById('categoryForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const name = document.getElementById('newCategoryName').value;
+    const type = document.getElementById('newCategoryType').value;
+
+    try {
+        await createCategory({ name, type });
+        document.getElementById('newCategoryName').value = '';
+        await loadCategories();
+    } catch (error) {
+        alert(error.message);
+    }
+});
 
 function formatCurrency(value) {
     return value.toLocaleString('pt-BR',{ style: 'currency', currency: 'BRL' });
