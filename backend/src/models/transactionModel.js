@@ -74,7 +74,7 @@ function getSummary(userId, filters = {}) {
 
 module.exports ={
     createTransaction,
-    findTransactionByUser,
+    findTransactionsByUser,
     findTransactionById,
     updateTransaction,
     deleteTransaction,

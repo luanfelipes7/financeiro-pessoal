@@ -47,7 +47,7 @@ export function listCategories(){
 }
 
 export function createTransaction(transaction) {
-    return register('/tranactions',{
+    return request('/transactions',{
         method: 'POST',
         body: JSON.stringify(transaction)
     });
@@ -56,7 +56,7 @@ export function createTransaction(transaction) {
 export function listTransactions(filters = {}){
     const params = new URLSearchParams(filters).toString();
     const query = params ? `?${params}`:'';
-    return request(`/transactions/${id}`, {method: 'GET'});
+    return request(`/transactions${query}`, {method: 'GET'});
 }
 
 export function deleteTransaction(id){

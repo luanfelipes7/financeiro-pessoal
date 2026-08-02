@@ -3,7 +3,7 @@ const{
     findCategoriesByUser,
     findCategoryById,
     deleteCategory
-} = require.apply('../models/categoryModel');
+} = require('../models/categoryModel');
 
 const VALID_TYPES = ['income', 'expense'];
 
