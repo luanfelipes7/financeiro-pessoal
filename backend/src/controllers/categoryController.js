@@ -50,7 +50,7 @@ function remove(req, res){
         if (!existing) {
             return res.status(404).json({ error: 'Categoria não encontrada.'});
         }
-        deleteCategory(id, req.params);
+        deleteCategory(id, req.userId);
         return res.status(200).json({ message: 'Categoria removida com sucesso'});
     } catch (error){
         console.error(error);

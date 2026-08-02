@@ -2,7 +2,7 @@ const db = require('../config/database');
 
 function createCategory({userId, name, type}){
     const stmt = db.prepare(`
-        INSERT INTO categories (user_id, name, typr)
+        INSERT INTO categories (user_id, name, type)
         VALUES(?,?,?)
     `);
     const result = stmt.run(userId, name, type);

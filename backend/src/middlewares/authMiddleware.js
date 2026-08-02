@@ -7,7 +7,7 @@ function authMiddleware(req,res,next){
         return res.status(401).json({error: 'Token não fornecido.'});
     }
 
-    const [scheme, token] = authHeader.split('  ');
+    const [scheme, token] = authHeader.split(' ');
 
     if (scheme != 'Bearer' || !token) {
         return res.status(401).json({error: 'Formato de token inválido. Use Bearer <token>.'});

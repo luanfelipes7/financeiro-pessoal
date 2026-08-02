@@ -2,7 +2,7 @@ const{
     createTransaction,
     findTransactionsByUser,
     findTransactionById,
-    uptateTransaction,
+    updateTransaction,
     deleteTransaction,
     getSummary
 } = require('../models/transactionModel');
