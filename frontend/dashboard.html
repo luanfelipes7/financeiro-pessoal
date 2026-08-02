@@ -69,6 +69,23 @@
 
             <div class="error-message" id="errorMessage"></div>
 
+            <section class="transaction-section">
+                <h2>Filtros</h2>
+                <div class="filters-bar">
+                    <input type="month" id="filterMonth">
+                    <select id="filterCategory">
+                        <option value="">Todas as categorias</option>
+                    </select>
+                    <select id="filterType">
+                        <option value="">Todos os tipos</option>
+                        <option value="income">Receita</option>
+                        <option value="expense">Despesa</option>
+                    </select>
+                    <button id="clearFiltersBtn" class="btn-secondary">Limpar</button>
+                    <button id="exportCsvBtn" class="btn-secondary">Exportar CSV</button>
+                </div>
+            </section>
+
             <h2>Transações</h2>
             <ul class="transaction-list" id="transactionList"></ul>
         </section>

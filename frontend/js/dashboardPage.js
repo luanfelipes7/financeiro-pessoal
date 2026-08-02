@@ -17,20 +17,31 @@ document.getElementById('date').valueAsDate = new Date();
 
 let chart = null;
 
-async function loadCategories(){
-    const {categories} = await listCategories();
-    const select = document.getElementById('category');
-    const type = document.getElementById('type').value;
+async function loadCategories() {
+    const { categories } = await listCategories();
 
-    select.innerHTML = '';
+    const typeSelect = document.getElementById('category');
+    const type = document.getElementById('type').value;
+    typeSelect.innerHTML = '';
     categories
         .filter((c) => c.type === type)
         .forEach((c) => {
             const option = document.createElement('option');
             option.value = c.name;
             option.textContent = c.name;
-            select.appendChild(option);
+            typeSelect.appendChild(option);
         });
+
+    const filterSelect = document.getElementById('filterCategory');
+    const currentValue = filterSelect.value;
+    filterSelect.innerHTML = '<option value="">Todas as categorias</option>';
+    categories.forEach((c) => {
+        const option = document.createElement('option');
+        option.value = c.name;
+        option.textContent = c.name;
+        filterSelect.appendChild(option);
+    });
+    filterSelect.value = currentValue;
 }
 
 document.getElementById('type').addEventListener('change', loadCategories);
@@ -50,12 +61,24 @@ document.getElementById('categoryForm').addEventListener('submit', async (event)
     }
 });
 
+['filterMonth', 'filterCategory', 'filterType'].forEach((id) => {
+    document.getElementById(id).addEventListener('change', refreshAll);
+});
+
+document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+    document.getElementById('filterMonth').value = '';
+    document.getElementById('filterCategory').value = '';
+    document.getElementById('filterType').value = '';
+    refreshAll();
+});
+
 function formatCurrency(value) {
     return value.toLocaleString('pt-BR',{ style: 'currency', currency: 'BRL' });
 }
 
-async function loadSummary(){
-    const {totalIncome, totalExpense, balance} = await getSummary();
+async function loadSummary() {
+    const filters = getActiveFilters();
+    const { totalIncome, totalExpense, balance } = await getSummary(filters.month);
     document.getElementById('totalIncome').textContent = formatCurrency(totalIncome);
     document.getElementById('totalExpense').textContent = formatCurrency(totalExpense);
     document.getElementById('balance').textContent = formatCurrency(balance);
@@ -84,7 +107,10 @@ function renderChart(transactions){
                 backgroundColor: ['#dc2626', '#f97316', '#eab308', '#2563eb', '#8b5cf6', '#16a34a']
             }]
         },
-        options: { responsive: true }
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
     });
 }
 
@@ -113,8 +139,8 @@ function renderTransactions(transactions){
     });
 }
 
-async function loadTransactions(){
-    const {transactions} = await listTransactions();
+async function loadTransactions() {
+    const { transactions } = await listTransactions(getActiveFilters());
     renderTransactions(transactions);
     renderChart(transactions);
 }
@@ -145,6 +171,48 @@ document.getElementById('transactionForm').addEventListener('submit', async (eve
         errorMessage.textContent = error.message;
         errorMessage.classList.add('visible');
     }
+});
+
+function getActiveFilters() {
+    const filters = {};
+    const month = document.getElementById('filterMonth').value;
+    const category = document.getElementById('filterCategory').value;
+    const type = document.getElementById('filterType').value;
+
+    if (month) filters.month = month;
+    if (category) filters.category = category;
+    if (type) filters.type = type;
+
+    return filters;
+}
+
+function transactionsToCSV(transactions) {
+    const header = 'Data,Tipo,Categoria,Descrição,Valor';
+    const rows = transactions.map((t) => {
+        const description = (t.description || '').replace(/,/g, ';');
+        return `${t.date},${t.type},${t.category},${description},${t.amount}`;
+    });
+    return [header, ...rows].join('\n');
+}
+
+document.getElementById('exportCsvBtn').addEventListener('click', async () => {
+    const { transactions } = await listTransactions(getActiveFilters());
+
+    if (transactions.length === 0) {
+        alert('Não há transações para exportar com esses filtros.');
+        return;
+    }
+
+    const csv = transactionsToCSV(transactions);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `transacoes_${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+
+    URL.revokeObjectURL(url);
 });
 
 loadCategories();
