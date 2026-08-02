@@ -106,8 +106,11 @@ body{
 }
 
 .chart-section{
-    position: relative;
-    height: 320px;
+    background-color: var(--color-white);
+    border-radius: var(--radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
 .filters-bar{
